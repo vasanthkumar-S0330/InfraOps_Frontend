@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  # Vue Frontend (Served by Nginx)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: infraops-frontend
+    restart: always
+    ports:
+      - "80:80"
