@@ -7,6 +7,18 @@ const api = axios.create({
   },
 });
 
+export const ticketsAPI = {
+  getTickets: () => api.get('/tickets'),
+  getTicket: (id) => api.get(`/tickets/${id}`),
+  createTicket: (ticket) => api.post('/tickets', ticket),
+  updateTicketStatus: (id, status, notes) => api.patch(`/tickets/${id}/status`, { status, resolutionNotes: notes })
+};
+
+export const serversAPI = {
+  getServers: () => api.get('/servers'),
+  addServer: (server) => api.post('/servers', server)
+};
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');

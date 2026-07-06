@@ -1,13 +1,13 @@
 <template>
-  <div class="stat-card" :class="`stat-card--${color}`">
+  <div class="stat-card" :class="[`stat-card--${color}`, { 'stat-card--compact': compact }]">
     <div class="stat-card__header">
       <span class="stat-card__icon">
-        <component :is="icon" v-if="typeof icon === 'object' || typeof icon === 'function'" :size="24" />
+        <component :is="icon" v-if="typeof icon === 'object' || typeof icon === 'function'" :size="compact ? 18 : 24" />
         <template v-else>{{ icon }}</template>
       </span>
       <span class="stat-card__label">{{ label }}</span>
     </div>
-    <div class="stat-card__value">{{ animatedValue }}</div>
+    <div class="stat-card__value">{{ animatedValue }}{{ suffix }}</div>
     <div v-if="sub" class="stat-card__sub">{{ sub }}</div>
   </div>
 </template>
@@ -21,6 +21,8 @@ const props = defineProps({
   icon: { type: [String, Object, Function], default: '📊' },
   color: { type: String, default: 'primary' }, // primary | success | warning | danger | info
   sub: { type: String, default: '' },
+  suffix: { type: String, default: '' },
+  compact: { type: Boolean, default: false },
 });
 
 const animatedValue = ref(0);
@@ -56,6 +58,19 @@ watch(() => props.value, (val) => animateTo(val));
   transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
   cursor: default;
 }
+
+.stat-card--compact {
+  padding: 10px 8px;
+  gap: 4px;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-card--compact .stat-card__header {
+  flex-direction: column;
+  gap: 4px;
+}
+
 .stat-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
@@ -90,6 +105,20 @@ watch(() => props.value, (val) => animateTo(val));
 .stat-card__sub {
   font-size: 0.78rem;
   color: var(--text-secondary);
+}
+
+.stat-card--compact .stat-card__icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+}
+.stat-card--compact .stat-card__label {
+  font-size: 0.65rem;
+  line-height: 1.1;
+  text-align: center;
+}
+.stat-card--compact .stat-card__value {
+  font-size: 1.25rem;
 }
 
 /* Color variants */

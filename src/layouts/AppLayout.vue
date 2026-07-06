@@ -12,6 +12,10 @@
           <span class="nav-icon"><LayoutDashboard :size="18" /></span>
           <span class="nav-label">Dashboard</span>
         </router-link>
+        <router-link to="/monitoring" class="nav-item" active-class="nav-item--active">
+          <span class="nav-icon"><Activity :size="18" /></span>
+          <span class="nav-label">Monitoring</span>
+        </router-link>
         <router-link to="/assets" class="nav-item" active-class="nav-item--active">
           <span class="nav-icon"><Monitor :size="18" /></span>
           <span class="nav-label">Assets</span>
@@ -60,7 +64,7 @@ import { ref, computed, provide } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import { useRouter } from 'vue-router';
 import ToastNotification from '../components/ToastNotification.vue';
-import { Zap, LayoutDashboard, Monitor, Ticket, Users, LogOut } from 'lucide-vue-next';
+import { Zap, LayoutDashboard, Monitor, Ticket, Users, LogOut, Activity } from 'lucide-vue-next';
 
 const authStore = useAuthStore();
 const router = useRouter();
