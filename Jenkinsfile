@@ -53,10 +53,11 @@ pipeline {
             steps {
                 sshagent(credentials: [SSH_CREDS_ID]) {
                     sh """
+                        scp -o StrictHostKeyChecking=no docker-compose.yml ${EC2_USER}@${EC2_IP}:/home/${EC2_USER}/docker-compose.frontend.yml
                         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_IP} "
-                            export FRONTEND_IMAGE=${DOCKER_HUB_USER}/${IMAGE_NAME}:latest &&
-                            docker-compose pull infrafrontend &&
-                            docker-compose up -d --no-deps infrafrontend
+                            sudo FRONTEND_IMAGE=${DOCKER_HUB_USER}/${IMAGE_NAME}:latest docker-compose -f docker-compose.frontend.yml pull infrafrontend &&
+                            sudo docker rm -f infraops-frontend || true &&
+                            sudo FRONTEND_IMAGE=${DOCKER_HUB_USER}/${IMAGE_NAME}:latest docker-compose -f docker-compose.frontend.yml up -d --no-deps infrafrontend
                         "
                     """
                 }
