@@ -9,12 +9,19 @@ import AssetsView from '../views/AssetsView.vue';
 import TicketsView from '../views/TicketsView.vue';
 import UsersView from '../views/UsersView.vue';
 import ProfileView from '../views/ProfileView.vue';
+import OAuth2RedirectHandler from '../views/OAuth2RedirectHandler.vue';
 
 const routes = [
   {
     path: '/login',
     name: 'Login',
     component: LoginView,
+    meta: { requiresGuest: true }
+  },
+  {
+    path: '/oauth2/redirect',
+    name: 'OAuth2Redirect',
+    component: OAuth2RedirectHandler,
     meta: { requiresGuest: true }
   },
   {

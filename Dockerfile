@@ -17,6 +17,16 @@ RUN npm run build
 # Stage 2: Serve the application using Nginx
 FROM nginx:alpine AS production-stage
 
+# Install openssl to generate self-signed certificate
+RUN apk add --no-cache openssl
+
+# Generate self-signed certificate
+RUN mkdir -p /etc/nginx/ssl && \
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/nginx-selfsigned.key \
+    -out /etc/nginx/ssl/nginx-selfsigned.crt \
+    -subj "/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=localhost"
+
 # Remove default Nginx static assets
 RUN rm -rf /usr/share/nginx/html/*
 
@@ -26,8 +36,8 @@ COPY --from=build-stage /app/dist /usr/share/nginx/html
 # Copy custom Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80
-EXPOSE 80
+# Expose HTTP and HTTPS ports
+EXPOSE 80 443
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
